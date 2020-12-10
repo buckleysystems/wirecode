@@ -4,6 +4,10 @@
 from typing import Dict
 
 
+def p(X, Y):
+    return X + 1j * Y
+
+
 def p_to_z(p: Dict[str, float]) -> complex:
     return p["X"] + 1j * p["Y"]
 
