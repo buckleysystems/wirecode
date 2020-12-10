@@ -14,3 +14,7 @@ def z_to_p(z: complex) -> Dict[str, float]:
 
 def midpoint(z1: complex, z2: complex) -> complex:
     return (z1 + z2) / 2
+
+
+def unit(z: complex) -> complex:
+    return z / abs(z)

@@ -97,6 +97,7 @@ class GCode:
         for axis, value in p.items():
             self.delete_code(axis)
             self.words += [f"{axis}{value:{_pfmt}}"]
+        return self
 
     def copy(self):
         return type(self)(**asdict(self))
