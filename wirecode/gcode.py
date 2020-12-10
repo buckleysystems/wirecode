@@ -1,10 +1,12 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from typing import Tuple, List, Union, Dict
 import re
+from .geometry import p_to_z, z_to_p, midpoint
 
 bracketed_comment_pattern = re.compile(r"(\(.*?\))")
 word_pattern = re.compile(r"([A-Z][+,-]?\d*[\.]?\d*)")
 whitespace_pattern = re.compile(r"\s+")
+_pfmt = "+014.8f"
 
 
 def remove_all_whitespace(string: str) -> str:
@@ -43,7 +45,7 @@ class GCode:
         parts = re.split(word_pattern, command)
         # This gives words and remaining stuff interleaved (remainder starts at 0)
         remainder = "".join(parts[::2])
-        self.words = parts[1::2]
+        self.words += parts[1::2]
         return remainder
 
     @classmethod
@@ -86,3 +88,34 @@ class GCode:
         found_words = [w for w in words if w is not None]
         # Return as a dictionary
         return {code: value for (code, value) in found_words}
+
+    def delete_code(self, code: str):
+        code = code.upper()
+        self.words = [w for w in self.words if not w.startswith(code)]
+
+    def set_position(self, p: Dict[str, float]):
+        for axis, value in p.items():
+            self.delete_code(axis)
+            self.words += [f"{axis}{value:{_pfmt}}"]
+
+    def copy(self):
+        return type(self)(**asdict(self))
+
+    def __repr__(self):
+        return " ".join(self.words + self.comments)
+
+
+def _word_to_tuple(string: str) -> Tuple[str, float]:
+    code = string[0].upper()
+    value = float(string[1:])
+    assert "A" <= code <= "Z"
+    return (code, value)
+
+
+def split_line(start_position, gcode):
+    end_position = start_position.copy()
+    end_position.update(gcode.get_position())
+    m = midpoint(p_to_z(start_position), p_to_z(end_position))
+    gm = gcode.copy()
+    gm.set_position(z_to_p(m))
+    return (gm,)
