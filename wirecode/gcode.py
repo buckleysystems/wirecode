@@ -60,8 +60,6 @@ class GCode:
         remainder = remainder.upper()
         # Now get out words
         remainder = gcode._extract_words(remainder)
-        print("+" * 80)
-        print(remainder)
         # That should be everything
         assert remainder == ""
         # Pass back GCode object
