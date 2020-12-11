@@ -17,7 +17,7 @@ def line_plan(start, end, segments, lead_in=None, lead_out=None):
         plan += [GCode(["G01"]).set_position(z_to_p(lead_in_pt))]
 
     # Yields (segments + 1) points
-    yield GCode(["G01"]).set_position(start)
+    plan += [GCode(["G01"]).set_position(start)]
     for n in range(segments):
         pt = z1 + direction * integration_length * (n + 1)
         plan += [GCode(["G01"], comments=["(INT)"]).set_position(z_to_p(pt))]
