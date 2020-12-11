@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field, asdict
-from typing import Tuple, List, Union, Dict
+from typing import Tuple, List, Union, Dict, Iterable
 import re
 from .geometry import p_to_z, z_to_p, midpoint
 
@@ -120,3 +120,7 @@ def split_line(start_position, gcode):
     gm = gcode.copy()
     gm.set_position(z_to_p(m))
     return (gm,)
+
+
+def plan_to_string(plan: Iterable[GCode]) -> str:
+    return "\n".join(str(g) for g in plan)
