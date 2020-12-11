@@ -5,6 +5,10 @@ from typing import Dict
 
 
 def p(X, Y):
+    return {"X": X, "Y": Y}
+
+
+def z(X, Y):
     return X + 1j * Y
 
 
