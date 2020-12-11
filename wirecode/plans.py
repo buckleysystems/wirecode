@@ -35,10 +35,10 @@ def _square_edge(quadrant, radius, segments, accel_length):
     ext_radius = 2 * radius / sqrt(2)
     side_length = 2 * radius
     rotation = e ** (1j * pi / 2 * (quadrant - 1))
-    unit_vec = unit(-1 + 1j) * rotation
-    start_pt = z_to_p((ext_radius + 0j) * rotation)
-    end_pt = z_to_p(start_pt + side_length * unit_vec)
-    return line_plan(start_pt, end_pt, segments, accel_length, accel_length)
+    direction = unit(-1 + 1j) * rotation
+    z1 = (ext_radius + 0j) * rotation
+    z2 = z1 + side_length * direction
+    return line_plan(z_to_p(z1), z_to_p(z2), segments, accel_length, accel_length)
 
 
 def square_plan(radius, segments_per_side, accel_length):
