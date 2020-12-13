@@ -7,7 +7,7 @@ from .tools import iter_with_lookahead
 def preprocess_integration_gcode(gcode: List[GCode]) -> List[GCode]:
     position = p(0, 0)
     gcode_out = []
-    for line, next_line in iter_with_lookahead(gcode):
+    for line, next_line in iter_with_lookahead(gcode, fillvalue=GCode()):
         g_line = line.copy()
         this_int = "(INT)" in line.comments
         next_int = "(INT)" in next_line.comments
