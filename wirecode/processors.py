@@ -18,7 +18,7 @@ def preprocess_integration_gcode(gcode: List[GCode]) -> List[GCode]:
             g_line.comments += ["(END)"]
         # Split if needed
         if this_int or next_int:
-            g_mid = split_line(position, line)
+            (g_mid,) = split_line(position, line)
             g_mid.words += ["S1000"]
             g_line.words += ["S0000"]
             gcode_out += [g_mid, g_line]
