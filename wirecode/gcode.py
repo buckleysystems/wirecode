@@ -25,6 +25,7 @@ class GCode:
         if idx < 0:
             # No semicolon means no comment, whole line is command
             remainder = command
+            line_comments = []
         else:
             # Split around the first semicolon
             remainder = command[:idx]
@@ -120,7 +121,3 @@ def split_line(start_position, gcode):
     gm = gcode.copy()
     gm.set_position(z_to_p(m))
     return (gm,)
-
-
-def plan_to_string(plan: Iterable[GCode]) -> str:
-    return "\n".join(str(g) for g in plan)

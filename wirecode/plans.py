@@ -3,6 +3,14 @@ from .gcode import GCode
 from math import e, pi, sqrt
 
 
+def plan_to_string(plan: Iterable[GCode]) -> str:
+    return "\n".join(str(g) for g in plan)
+
+
+def string_to_plan(string: str) -> List[GCode]:
+    return list(GCode.from_string(line) for line in string.splitlines())
+
+
 def line_plan(start, end, segments, lead_in=None, lead_out=None):
     z1 = p_to_z(start)
     z2 = p_to_z(end)
@@ -45,4 +53,4 @@ def square_plan(radius, segments_per_side, accel_length):
     sides = [
         _square_edge(q, radius, segments_per_side, accel_length) for q in (1, 2, 3, 4)
     ]
-    return sum(sides, start=[])
+    return sum(sides, [])
