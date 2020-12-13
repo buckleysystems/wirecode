@@ -1,6 +1,7 @@
 from .geometry import p_to_z, z_to_p, unit
 from .gcode import GCode
 from math import e, pi, sqrt
+from typing import Iterable, List
 
 
 def plan_to_string(plan: Iterable[GCode]) -> str:

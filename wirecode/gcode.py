@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field, asdict
-from typing import Tuple, List, Union, Dict, Iterable
+from typing import Tuple, List, Union, Dict
 import re
 from .geometry import p_to_z, z_to_p, midpoint
 
