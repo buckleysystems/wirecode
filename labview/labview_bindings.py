@@ -1,6 +1,11 @@
-from typing import List, Tuple
+# Add path so we can find the python library
+import sys
+from os import path
 
-from wirecode import processors, plan_to_string, string_to_plan
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+
+from typing import List, Tuple
+from wirecode import processors, plans, plan_to_string, string_to_plan
 
 
 def preprocess_gcode(plan_string: str) -> str:
@@ -26,3 +31,9 @@ def count_integrals_required(plan_string: str) -> int:
     result = processors.preprocess_integration_gcode(plan)
     count_rising = len([1 for g in result if "S1000" in g.words])
     return count_rising - 1
+
+
+def get_plan_coordinates(plan_string: str) -> List[Tuple[float, float]]:
+    plan = string_to_plan(plan_string)
+    coords = plans.plan_to_coordinates(plan)
+    return [(z.real, z.imag) for z in coords]

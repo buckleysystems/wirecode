@@ -1,4 +1,4 @@
-from .geometry import p_to_z, z_to_p, unit
+from .geometry import p_to_z, z_to_p, unit, p
 from .gcode import GCode
 from math import e, pi, sqrt
 from typing import Iterable, List
@@ -55,3 +55,14 @@ def square_plan(radius, segments_per_side, accel_length):
         _square_edge(q, radius, segments_per_side, accel_length) for q in (1, 2, 3, 4)
     ]
     return sum(sides, [])
+
+
+def plan_to_coordinates(plan: List[GCode]) -> List[complex]:
+    position = p(0, 0)
+    coordinates: List[complex] = []
+    for g in plan:
+        old_position = position.copy()
+        position.update(g.get_position())
+        if position != old_position:
+            coordinates.append(p_to_z(position))
+    return coordinates
