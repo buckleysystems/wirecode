@@ -139,4 +139,4 @@ cython_debug/
 
 # Labview
 *.aliases
-*.lvps
+*.lvlps
