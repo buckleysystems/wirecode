@@ -1,7 +1,7 @@
-from typing import List
+from typing import List, Tuple, Optional
 from .gcode import GCode, split_line
-from .geometry import p
-from .tools import iter_with_lookbehind
+from .geometry import p, p_to_z
+from .tools import iter_with_lookbehind, iter_with_lookahead
 
 
 def preprocess_integration_gcode(gcode: List[GCode]) -> List[GCode]:
@@ -26,3 +26,17 @@ def preprocess_integration_gcode(gcode: List[GCode]) -> List[GCode]:
         # Keep track of current position
         position.update(g_line.get_position())
     return gcode_out
+
+
+def integral_labels(gcode: List[GCode]) -> List[Optional[Tuple[complex, complex]]]:
+    position = p(0, 0)
+    positions: List[Optional[Tuple[complex, complex]]] = []
+    for line, next_line in iter_with_lookahead(gcode, GCode()):
+        next_position = position.copy()
+        next_position.update(line.get_position())
+        if "(INT)" in line.comments:
+            positions += [(p_to_z(position), p_to_z(next_position))]
+            if "(INT)" not in next_line.comments:
+                positions += [None]
+        position = next_position
+    return positions[:-1]
