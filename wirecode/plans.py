@@ -38,6 +38,43 @@ def line_plan(start, end, segments, lead_in=None, lead_out=None):
 
     return plan
 
+def circle_plan(radius, number_segments, lead_in_deg=45, lead_out_deg=45):
+    segment_angle = 2*pi/number_segments
+    # Start offset by half a segment so that the midpoint is at 0
+    start_angle = -segment_angle/2
+
+    # Calculate number of segments in the lead-in
+    #Approximately the same angular frequency as the main circle
+    lead_in_angle = -pi*lead_in_deg/180
+    lead_in_segments = round((start_angle-lead_in_angle)/segment_angle)
+    lead_in_segment_angle = (start_angle-lead_in_angle)/lead_in_segments
+
+    # Same for lead-out
+    lead_out_angle = pi*lead_out_deg/180
+    lead_out_segments = round((lead_out_angle - start_angle)/segment_angle)
+    lead_out_segment_angle = (lead_out_angle - start_angle)/lead_out_segments
+
+    plan = []
+    
+    # Do the lead-in
+    for n in range(lead_in_segments+1):
+        next_angle = lead_in_angle + n*lead_in_segment_angle
+        next_point = radius*e**(1j*next_angle)
+        plan += [GCode(["G01"]).set_position(z_to_p(next_point))]
+    
+    # Do the integrals
+    for n in range(number_segments):
+        next_angle = start_angle + (n+1)*segment_angle
+        next_point = radius*e**(1j*next_angle)
+        plan += [GCode(["G01"], comments=["(INT)"]).set_position(z_to_p(next_point))]
+    
+    # Do the lead-out
+    for n in range(lead_out_segments):
+        next_angle = start_angle + (n+1)*lead_out_segment_angle
+        next_point = radius*e**(1j*next_angle)
+        plan += [GCode(["G01"]).set_position(z_to_p(next_point))]
+
+    return plan
 
 def _square_edge(quadrant, radius, segments, accel_length):
     """One edge of a square plan"""
