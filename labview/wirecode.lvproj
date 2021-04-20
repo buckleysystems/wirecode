@@ -11,6 +11,7 @@
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
 		<Item Name="count_integrations.vi" Type="VI" URL="../count_integrations.vi"/>
+		<Item Name="generate_circle_plan.vi" Type="VI" URL="../generate_circle_plan.vi"/>
 		<Item Name="generate_square_plan.vi" Type="VI" URL="../generate_square_plan.vi"/>
 		<Item Name="get_python_library_path.vi" Type="VI" URL="../get_python_library_path.vi"/>
 		<Item Name="label_integrals.vi" Type="VI" URL="../label_integrals.vi"/>

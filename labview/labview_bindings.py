@@ -1,11 +1,12 @@
-# Add path so we can find the python library
 import sys
 from os import path
+from typing import List, Tuple
 
+# Add path so we can find the python library
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
-from typing import List, Tuple
 from wirecode import processors, plans, plan_to_string, string_to_plan
+
 
 
 def preprocess_gcode(plan_string: str) -> str:
@@ -43,3 +44,9 @@ def generate_square_plan(
     radius: float, segments_per_side: int, accel_length: float
 ) -> str:
     return plan_to_string(plans.square_plan(radius, segments_per_side, accel_length))
+
+
+def generate_circle_plan(
+    radius: float, number_segments: int, lead_in_angle: float, lead_out_angle: float
+) -> str:
+    return plan_to_string(plans.circle_plan(radius, number_segments, lead_in_angle, lead_out_angle))
