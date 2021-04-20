@@ -121,3 +121,9 @@ def split_line(start_position, gcode):
     gm = gcode.copy()
     gm.set_position(z_to_p(m))
     return (gm,)
+
+def load_gcode(file):
+    """Read gcode from file-like object, return list of GCodes"""
+    file_lines = file.readlines()
+    gcode_lines = [stripped for l in file_lines if (stripped := remove_all_whitespace(l))]
+    return [GCode.from_string(l) for l in gcode_lines]

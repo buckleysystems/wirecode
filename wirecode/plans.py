@@ -58,6 +58,9 @@ def square_plan(radius, segments_per_side, accel_length):
 
 
 def plan_to_coordinates(plan: List[GCode]) -> List[complex]:
+    """Returns all coordinates in plan
+    
+    includes points not involved in integration"""
     position = p(0, 0)
     coordinates: List[complex] = []
     for g in plan:
