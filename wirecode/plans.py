@@ -50,7 +50,9 @@ def _square_edge(quadrant, radius, segments, accel_length):
     return line_plan(z_to_p(z1), z_to_p(z2), segments, accel_length, accel_length)
 
 
-def square_plan(radius, segments_per_side, accel_length):
+def square_plan(
+    radius: float, segments_per_side: int, accel_length: float
+) -> List[GCode]:
     sides = [
         _square_edge(q, radius, segments_per_side, accel_length) for q in (1, 2, 3, 4)
     ]

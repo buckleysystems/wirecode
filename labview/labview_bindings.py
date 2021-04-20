@@ -37,3 +37,9 @@ def get_plan_coordinates(plan_string: str) -> List[Tuple[float, float]]:
     plan = string_to_plan(plan_string)
     coords = plans.plan_to_coordinates(plan)
     return [(z.real, z.imag) for z in coords]
+
+
+def generate_square_plan(
+    radius: float, segments_per_side: int, accel_length: float
+) -> str:
+    return plan_to_string(plans.square_plan(radius, segments_per_side, accel_length))
